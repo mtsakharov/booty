@@ -16,6 +16,7 @@ class CreateInformationTable extends Migration
         Schema::create('information', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
+            $table->string('type')->default(1);
             $table->string('race');
             $table->integer('age');
             $table->string('gender');

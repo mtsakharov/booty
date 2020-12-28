@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Information;
+use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
@@ -11,6 +12,14 @@ use Illuminate\Http\Response;
 class InformationController extends Controller
 {
     /**
+     * @return Information[]|Collection
+     */
+    public function index()
+    {
+        return Information::all();
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  Request  $request
@@ -18,7 +27,7 @@ class InformationController extends Controller
      */
     public function store(Request $request)
     {
-        Information::create([
+        return Information::create([
             'race' => $request->race,
             'age' => $request->age,
             'user_id' => auth()->user()->id,
@@ -28,18 +37,18 @@ class InformationController extends Controller
             'weight' => $request->weight,
             'gender' => $request->gender,
         ]);
-
-        return 'ok';
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  Information  $information
+     * @param $id
      * @return Builder[]|Collection|Response
      */
-    public function show(Information $information)
+    public function show($id)
     {
+        $information = Information::findOrFail($id);
+
         return $information->with('user')->get();
     }
 
@@ -52,20 +61,18 @@ class InformationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $information = Information::find($id);
+        $information = Information::findOrFail($id);
 
-        $information->update(
-            [
-                'race' => $request->race,
-                'age' => $request->age,
-                'user_id' => auth()->user()->id,
-                'boobs_size' => $request->boobs_size,
-                'hair_color' => $request->hair_color,
-                'height' => $request->height,
-                'weight' => $request->weight,
-                'gender' => $request->gender,
-            ]
-        );
+        $information->update([
+            'race' => $request->race,
+            'age' => $request->age,
+            'user_id' => auth()->user()->id,
+            'boobs_size' => $request->boobs_size,
+            'hair_color' => $request->hair_color,
+            'height' => $request->height,
+            'weight' => $request->weight,
+            'gender' => $request->gender,
+        ]);
 
         return $information;
     }
@@ -73,13 +80,20 @@ class InformationController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Information  $information
-     * @return string
+     * @param $id
+     * @return array
      */
-    public function destroy(Information $information)
+    public function destroy($id)
     {
+        $information = Information::findOrFail($id);
+
         $information->delete();
 
-        return 'ok';
+        return ['status' => 'deleted'];
+    }
+
+    public function getAllUsersWithActiveWork()
+    {
+        return Information::all()->where('type', '=', 1)->get();
     }
 }

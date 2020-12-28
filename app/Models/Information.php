@@ -16,6 +16,7 @@ class Information extends Model
      * @var array
      */
     protected $fillable = [
+        'type',
         'race',
         'age',
         'user_id',
