@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Information;
+use App\Models\User;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -94,6 +95,6 @@ class InformationController extends Controller
 
     public function getAllUsersWithActiveWork()
     {
-        return Information::all()->where('type', '=', 1)->get();
+        return User::with('information')->get();
     }
 }
