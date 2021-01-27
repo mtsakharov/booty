@@ -62,7 +62,11 @@ trait SanctumAuth
      */
     public function logout()
     {
-        return auth()->user()->tokens()->delete();
+        $user = request()->user();
+
+        $user->tokens()->where('id', $user->currentAccessToken()->id)->delete();
+
+        return $user;
     }
 
     public function verify()

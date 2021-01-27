@@ -22,8 +22,8 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::get('/information/show/{id}', [\App\Http\Controllers\InformationController::class, 'show']);
     Route::post('/information/update/{id}', [\App\Http\Controllers\InformationController::class, 'update']);
     Route::post('/information/delete/{id}', [\App\Http\Controllers\InformationController::class, 'destroy']);
+    Route::post('/logout', [\App\Http\Controllers\AuthController::class, 'logout']);
 });
 
 Route::post('/login', [\App\Http\Controllers\AuthController::class, 'login']);
 Route::post('/register', [\App\Http\Controllers\AuthController::class, 'register']);
-Route::post('/logout', [\App\Http\Controllers\AuthController::class, 'logout']);
